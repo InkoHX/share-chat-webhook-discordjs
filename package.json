@@ -1,0 +1,24 @@
+{
+  "name": "share-chat-webhook-discordjs",
+  "version": "1.0.0",
+  "description": "Share messages with multiple channels. (Webhook version)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InkoHX/share-chat-webhook-discordjs.git"
+  },
+  "keywords": [],
+  "author": "InkoHX <inkohx@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/InkoHX/share-chat-webhook-discordjs/issues"
+  },
+  "homepage": "https://github.com/InkoHX/share-chat-webhook-discordjs#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "proxy-deep": "^2.3.1"
+  }
+}
