@@ -5,14 +5,14 @@ describe('store.js', () => {
   describe('直列', () => {
     const storeAsync = dataStore('./testStore/series.json', { apple: 0, banana: 0 })
 
-    it('書き込み', async () => {
+    it('write data', async () => {
       const store = await storeAsync
 
       store.apple = 3
       store.banana = 2
     })
 
-    it('読み込み', async () => {
+    it('Is the data correct?', async () => {
       const store = await storeAsync
 
       asserts.strictEqual(store.apple, 3)
@@ -53,14 +53,14 @@ describe('store.js', () => {
       }
     ]
 
-    it('書き込み', async () => {
+    it('write data', async () => {
       const store = await storeAsync
 
       return Promise.all(apples.map(value => store.apples.push(value)))
         .then(() => Promise.all(bananas.map(value => store.bananas.push(value))))
     })
 
-    it('読み込み', async () => {
+    it('Is the data correct?', async () => {
       const store = await storeAsync
 
       asserts.deepStrictEqual(store.apples, apples)
