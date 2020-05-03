@@ -1,5 +1,5 @@
 const DeepProxy = require('proxy-deep')
-const fs = require('fs/promises')
+const fs = require('fs').promises
 const { dirname } = require('path')
 const mkdirp = require('mkdirp')
 
