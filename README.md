@@ -1,5 +1,7 @@
 # share-chat-webhook-discordjs
 
+![CI](https://github.com/InkoHX/share-chat-webhook-discordjs/workflows/CI/badge.svg)
+
 Share messages with multiple channels. (Webhook version)
 
 ## How to use
