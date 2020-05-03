@@ -1,43 +1,6 @@
 const Discord = require('discord.js')
-const DeepProxy = require('proxy-deep')
-const fs = require('fs/promises')
-const mkdirp = require('mkdirp')
-const { dirname } = require('path')
 const client = new Discord.Client()
-
-/**
- * data store
- * @param {string} path
- * @param {object} _default
- *
- * @see {@link https://scrapbox.io/discordjs-japan/更新したら自動で保存されるオブジェクトのサンプル|Scrapbox}
- */
-const dataStore = async (path, _default = {}) => {
-  const data = await fs
-    .readFile(path)
-    .then(file => JSON.parse(file))
-    .catch(async () => {
-      await mkdirp(dirname(path))
-      await fs.writeFile(path, JSON.stringify(_default, null, 2))
-      return _default
-    })
-
-  return new DeepProxy(data, {
-    get (target, key, receiver) {
-      const val = Reflect.get(target, key, receiver)
-      if (typeof val === 'object' && val !== null) {
-        return this.nest(val)
-      } else {
-        return val
-      }
-    },
-    set (target, key, value, receiver) {
-      Reflect.set(target, key, value, receiver)
-      fs.writeFile(path, JSON.stringify(this.rootTarget, null, 2))
-      return true
-    }
-  })
-}
+const dataStore = require('./store')
 
 /**
  * @type {Promise<{ webhooks: { channelId: string, webhookId: string }[]}>}
@@ -68,7 +31,7 @@ const noChannelMentionMessage = 'チャンネルをメンションしてメッ�
 /**
  * @param {Discord.Message} message
  */
-async function addShareChannel (message) {
+async function addShareChannel(message) {
   const member = message.member
   const channels = message.mentions.channels
 
@@ -84,14 +47,14 @@ async function addShareChannel (message) {
     .then(channelIds => channelIds.filter(channelId => store.some(value => value.channelId !== channelId)))
     .then(channelIds => channels.filter(channel => !channelIds.includes(channel.id)))
     .then(channels => Promise.all(channels.map(channel => channel.createWebhook('Share Chat'))))
-    .then(webhooks => webhooks.map(webhook => store.push({ webhookId: webhook.id, channelId: webhook.channelID })))
+    .then(webhooks => Promise.all(webhooks.map(webhook => store.push({ webhookId: webhook.id, channelId: webhook.channelID }))))
     .then(indexNumbers => message.reply(`${indexNumbers.length}個のチャンネルを共有化しました。`))
 }
 
 /**
  * @param {Discord.Message} message
  */
-async function removeShareChannel (message) {
+async function removeShareChannel(message) {
   const member = message.member
   const channels = message.mentions.channels
 
@@ -121,7 +84,7 @@ async function removeShareChannel (message) {
 /**
  * @param {Discord.Message} message
  */
-async function handleMessage (message) {
+async function handleMessage(message) {
   const store = await storeAsync.then(value => value.webhooks)
 
   if (!store.find(value => value.channelId === message.channel.id)) return

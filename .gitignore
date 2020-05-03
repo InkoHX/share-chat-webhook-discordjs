@@ -105,3 +105,6 @@ dist
 
 # data store
 data.json
+
+# test data
+testData/
