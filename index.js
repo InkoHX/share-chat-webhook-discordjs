@@ -5,7 +5,7 @@ const dataStore = require('./store')
 /**
  * @type {Promise<{ webhooks: { channelId: string, webhookId: string }[]}>}
  */
-const storeAsync = dataStore('./data.json', { webhooks: [] })
+const storeAsync = dataStore('./data/data.json', { webhooks: [] })
 
 client.once('ready', () => console.log('Ready!'))
 
