@@ -1,10 +1,14 @@
 FROM node:14-alpine
 
-COPY . /inkohx/app/discordjs-share-chat
+ENV WORKDIR_PATH "/inkohx/app/discordjs-share-chat"
 
-WORKDIR /inkohx/app/discordjs-share-chat
+COPY . ${WORKDIR_PATH}
+
+WORKDIR ${WORKDIR_PATH}
 
 RUN npm i --production \
   npm cache clean
+
+VOLUME "${WORKDIR_PATH}/data"
 
 ENTRYPOINT [ "npm", "start" ]
