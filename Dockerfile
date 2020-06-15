@@ -6,8 +6,8 @@ COPY . ${WORKDIR_PATH}
 
 WORKDIR ${WORKDIR_PATH}
 
-RUN npm i --production \
-  npm cache clean
+RUN npm i --production
+RUN npm cache clean --force
 
 VOLUME "${WORKDIR_PATH}/data"
 
